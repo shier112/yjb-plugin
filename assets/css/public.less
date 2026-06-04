@@ -1,0 +1,350 @@
+@import "../css/font";
+
+* {
+    box-sizing: border-box !important;
+    line-height: normal;
+    font-family: inherit;
+
+        -webkit-touch-callout:none; /*系统默认菜单被禁用*/
+        -webkit-user-select:none; /*webkit浏览器*/
+        -khtml-user-select:none; /*早期浏览器*/
+        -moz-user-select:none;/*火狐*/
+        -ms-user-select:none; /*IE10*/
+        user-select:none; 
+
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, legend, button form, fieldset, 
+input, textarea, p, blockquote, th,
+td {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+/* width 最多783 */
+/* height 最多600 */
+#yjb_app {
+    display: flex;
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1);
+    width: 665px;
+}
+
+.yjb_fb {
+    display: flex;
+    align-items: center;
+}
+
+// 字体
+.yjb_ffm {
+    font-family: PingFangSC-Medium, PingFang SC;
+}
+
+.yjb_ffr {
+    font-family: PingFangSC-Regular, PingFang SC;
+}
+
+.yjb_ffl {
+    font-family: PingFangSC-Light, PingFang SC;
+}
+
+.yjb_ffd {
+    font-family: 'DIN Alternate'!important;
+}
+
+// 字重
+.yjb_fw3 {
+    font-weight: 300;
+}
+
+.yjb_fw4 {
+    font-weight: 400;
+}
+
+.yjb_fw5 {
+    font-weight: 500;
+}
+
+.yjb_fw6 {
+    font-weight: 600;
+}
+
+.yjb_fwb {
+    font-weight: bold;
+}
+
+// 字体大小
+.yjb_fs12 {
+    font-size: 12px !important;
+}
+
+.yjb_fs14 {
+    font-size: 14px !important;
+}
+
+.yjb_fs16 {
+    font-size: 16px !important;
+}
+
+.yjb_fs17 {
+    font-size: 17px !important;
+}
+
+.yjb_fs18 {
+    font-size: 18px !important;
+}
+
+.yjb_fs20 {
+    font-size: 20px !important;
+}
+
+// 颜色
+@c1: #141A45;
+@c3: #3e63ef;
+@c5: #535988;
+@c6: #6f779d;
+@c7: #757aa0;
+@c8: #8084a4;
+@c9: #989cb8;
+@ca: #aeb5c4;
+@ce: #E3E6ED;
+@cred: #FC4E50;
+@cgreen: #07B360;
+@cwhite: #fff;
+
+.yjb_c1 {
+    color: @c1;
+}
+
+.yjb_c3 {
+    color: @c3;
+}
+
+.yjb_c5 {
+    color: @c5;
+}
+
+.yjb_c6 {
+    color: @c6;
+}
+
+.yjb_c7 {
+    color: @c7;
+}
+
+.yjb_c8 {
+    color: @c8;
+}
+
+.yjb_c9 {
+    color: @c9;
+}
+
+.yjb_ca {
+    color: @ca;
+}
+
+.yjb_ce {
+    color: @ce;
+}
+
+.yjb_cred {
+    color: @cred;
+}
+
+.yjb_cgreen {
+    color: @cgreen;
+}
+
+.yjb_cwhite {
+    color: @cwhite;
+}
+
+.yjb_bg_red {
+    background: #fbebed;
+}
+
+.yjb_bg_green {
+    background: #e3f5ef;
+}
+
+.yjb_bg_normal {
+    background: #ebeffd;
+}
+
+.yjb_bg_dgray {
+    background: #aeb5c4;
+}
+
+.yjb_bg_mgray {
+    background: #e3e6ed;
+}
+
+.yjb_bg_lgray {
+    background: #fcfcfc;
+}
+
+// 内边距
+.yjb_pl12 {
+    padding-left: 12px;
+}
+
+.yjb_pr12 {
+    padding-right: 12px;
+}
+
+.yjb_pl20 {
+    padding-left: 20px;
+}
+
+.yjb_pr20 {
+    padding-right: 20px;
+}
+
+// 列表样式
+.yjb_list_bold {
+    font-size: 18px;
+    font-family: 'DIN Alternate'!important;
+}
+
+.yjb_list_normal {
+    font-size: 14px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #8084A4;
+    white-space: nowrap;
+}
+
+
+.yjb_relative {
+    position: relative;
+}
+
+.yjb_absolute {
+    position: absolute;
+}
+
+.yjb_cursor{
+    cursor: pointer;
+}
+
+.yjb_overlay {
+    // border-radius: 8px;
+    // width: 665px;
+    // height: 600px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 4;
+}
+
+.yjb_ellipsis {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+input {
+    background: none !important;
+    outline: none !important;
+    border: none !important;
+    -webkit-touch-callout:auto; /*系统默认菜单被禁用*/
+        -webkit-user-select:auto; /*webkit浏览器*/
+        -khtml-user-select:auto; /*早期浏览器*/
+        -moz-user-select:auto;/*火狐*/
+        -ms-user-select:auto; /*IE10*/
+        user-select:auto; 
+}
+
+.yjb_tooltip {
+    white-space: nowrap;
+    position: absolute;
+    z-index: 4;
+    left: 100px;
+    top: 30px;
+    background: #FFFFFF;
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #141A45;
+    box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    border: 1px solid #D3D6DF;
+    padding: 2px 8px;
+}
+
+.yjb_toast {
+    position: absolute;
+    max-width: 300px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    padding: 6px 16px;
+    font-size: 16px;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #FFFFFF;
+    z-index: 20;
+}
+
+.yjb_update {
+  display: inline-block;
+  border: 1px solid #93b2ff;
+  font-size: 12px;
+  transform: scale(0.9);
+  transform-origin: left bottom;
+  -webkit-transform-origin: left bottom;
+  border-radius: 4px;
+  position: relative;
+  z-index: 4;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-left: 6px;
+  color: #3e63ef;
+}
+
+.van-switch {
+    font-size: 25px !important;
+    /* height: 62px!important; */
+    width: 33px !important;
+    height: 20px !important;
+    border: 0 !important;
+}
+
+/deep/ .van-switch .van-switch__node {
+    width: 18px !important;
+    height: 18px !important;
+    top: 1px !important;
+    left: 1px !important;
+}
+
+/deep/ .van-switch--on .van-switch__node {
+    width: 18px !important;
+    height: 18px !important;
+    top: 1px !important;
+    left: auto !important;
+    right: 26px !important;
+}
+
+
+//   .hr{
+//     width: 645px;
+//     height: 1px;
+//     background: #F9F9FA;
+//   }

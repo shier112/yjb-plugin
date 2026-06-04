@@ -1,0 +1,11 @@
+node_modules/
+.workbuddy/
+
+*.bak
+*.tmp
+*.old
+*.log
+*.map
+
+.DS_Store
+Thumbs.db

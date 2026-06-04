@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "养基宝 - 实时查看基金收益",
+  "description": "支持一键导入，最方便的基金实时收益查看工具。",
+  "version": "1.2.1",
+  "action": {
+    "default_title": "养基宝 - 实时查看基金收益",
+    "default_icon": "assets/images/icon48.png",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "icons": {
+    "16": "assets/images/icon16.png",
+    "48": "assets/images/icon48.png",
+    "128": "assets/images/icon128.png"
+  },
+  "permissions": [
+    "storage",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://browser-plug-api.yangjibao.com/*",
+    "http://browser-plug-api.yangjibao.com/*",
+    "https://qyapi.weixin.qq.com/*"
+  ]
+}

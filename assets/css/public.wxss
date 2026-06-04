@@ -1,0 +1,110 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+}
+/* width 最多783 */
+/* height 最多600 */
+#app {
+  display: flex;
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1);
+  width: 665px;
+}
+.fb {
+  display: flex;
+  align-items: center;
+}
+.ffm {
+  font-family: PingFangSC-Medium, PingFang SC;
+}
+.ffr {
+  font-family: PingFangSC-Regular, PingFang SC;
+}
+.ffl {
+  font-family: PingFangSC-Light, PingFang SC;
+}
+.ffd {
+  font-family: DINAlternate-Bold, DINAlternate;
+}
+.fw3 {
+  font-weight: 300;
+}
+.fw4 {
+  font-weight: 400;
+}
+.fw5 {
+  font-weight: 500;
+}
+.fwb {
+  font-weight: bold;
+}
+.fs12 {
+  font-size: 12px;
+}
+.fs14 {
+  font-size: 14px;
+}
+.fs16 {
+  font-size: 16px;
+}
+.fs17 {
+  font-size: 17px;
+}
+.fs20 {
+  font-size: 20px;
+}
+.theme {
+  color: #3e63ef;
+}
+.c1 {
+  color: #141A45;
+}
+.c5 {
+  color: #535988;
+}
+.c8 {
+  color: #8084a4;
+}
+.c9 {
+  color: #989cb8;
+}
+.red {
+  color: #FC4E50;
+}
+.green {
+  color: #07B360;
+}
+.bg_red {
+  background: #fbebed;
+}
+.bg_green {
+  background: #e3f5ef;
+}
+.bg_dgray {
+  background: #aeb5c4;
+}
+.bg_lgray {
+  background: #e3e6ed;
+}
+.pl12 {
+  padding-left: 12px;
+}
+.pr12 {
+  padding-right: 12px;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

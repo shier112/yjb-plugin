@@ -1,0 +1,37 @@
+#main {
+  flex-direction: column;
+  width: 665px;
+}
+#main .head {
+  justify-content: space-around;
+  padding: 12px 20px 0;
+}
+#main .head .hl .logo {
+  width: 40px;
+  height: 40px;
+}
+#main .head .hl .option {
+  margin-left: 24px;
+  margin-right: 12px;
+}
+#main .head .hl .option .line {
+  width: 1px;
+  height: 20px;
+}
+#main .head .hl .s_icon {
+  width: 28px;
+  height: 28px;
+}
+#main .head .hr .tip {
+  padding: 3px 12px;
+  background: rgba(174, 181, 196, 0.3);
+  border-radius: 15px;
+}
+#main .head .hr img {
+  width: 28px;
+  height: 28px;
+}
+#main .head .hr :nth-child(2) {
+  margin-left: 8px;
+  margin-right: 20px;
+}

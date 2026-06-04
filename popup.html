@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=665">
+  <title>养基宝 - 实时查看基金收益</title>
+  <link rel="stylesheet" href="css/popup.css">
+</head>
+<body>
+<div id="app" class="yjb_app">
+
+  <!-- ========== 主视图 ========== -->
+  <div id="view_main" class="yjb_view yjb_view_active">
+
+    <!-- 标题栏 -->
+    <header class="yjb_header">
+      <div class="yjb_header_back" id="btn_back_main" style="display:none;">←</div>
+      <h1 class="yjb_header_title">养基宝</h1>
+      <div class="yjb_header_actions">
+        <span class="yjb_refresh_countdown" id="refresh_countdown">--:--</span>
+        <button class="yjb_header_icon_btn" id="btn_refresh_now" type="button" title="手动刷新" aria-label="手动刷新">⟳</button>
+        <button class="yjb_header_icon_btn yjb_header_settings" id="btn_settings" type="button" title="设置" aria-label="设置">⚙</button>
+      </div>
+    </header>
+
+    <!-- 大盘指数栏 -->
+    <section class="yjb_market_bar" id="market_bar">
+      <!-- 动态生成：上证指数/深证成指/创业板指/沪深300/上证50 等 -->
+    </section>
+
+    <!-- 账户标签页 -->
+    <nav class="yjb_tabs" id="account_tabs">
+      <!-- 动态生成："全部" + 各账户名 -->
+    </nav>
+
+    <!-- 账户详情卡片 -->
+    <section class="yjb_account_card" id="account_card">
+      <!-- 动态生成：图标 + 名称 + 涨跌数 + 迷你图 + 三行摘要 -->
+    </section>
+
+    <!-- 基金列表（表格形式） -->
+    <section class="yjb_fund_list" id="fund_list">
+      <!-- 动态生成：表格形式基金列表 -->
+    </section>
+
+    <!-- 底部操作栏 -->
+    <footer class="yjb_bottom_bar" id="bottom_bar">
+      <span class="yjb_bottom_add" id="btn_add_fund_quick">+ 新增持有</span>
+      <span class="yjb_bottom_assets" id="bottom_assets">¥ --</span>
+      <span class="yjb_bottom_up" id="bottom_up">↑ --</span>
+      <span class="yjb_bottom_down" id="bottom_down">↓ --</span>
+      <span class="yjb_bottom_income" id="bottom_income">今日收益: --</span>
+      <span class="yjb_bottom_toggle" id="bottom_expand">▼</span>
+    </footer>
+
+    <!-- 收益详情展开面板（底部栏箭头触发，展示在底部栏下方） -->
+    <div class="yjb_detail_expand_wrapper" id="detail_expand_panel"></div>
+
+  </div><!-- /主视图 -->
+
+  <!-- ========== 管理页面 ========== -->
+  <div id="view_manage" class="yjb_view">
+
+    <header class="yjb_header">
+      <div class="yjb_header_back" id="btn_back_from_manage">←</div>
+      <h1 class="yjb_header_title">持有管理</h1>
+      <div class="yjb_header_placeholder"></div>
+    </header>
+
+    <!-- 大盘指数栏（管理页也有） -->
+    <section class="yjb_market_bar" id="market_bar_manage">
+      <!-- 动态生成 -->
+    </section>
+
+    <!-- 账户标签页 -->
+    <nav class="yjb_tabs" id="account_tabs_manage">
+      <!-- 动态生成 -->
+    </nav>
+
+    <!-- 搜索栏 -->
+    <div class="yjb_search_bar">
+      <input type="text" id="search_input" placeholder="搜索基金名称或代码..." />
+    </div>
+
+    <!-- 基金管理列表（表格形式） -->
+    <section class="yjb_manage_list" id="manage_list">
+      <!-- 动态生成：表头 + 基金行 -->
+    </section>
+
+    <!-- 底部操作栏 -->
+    <footer class="yjb_bottom_bar" id="bottom_bar_manage">
+      <span class="yjb_bottom_add" id="btn_add_fund_quick_mg">+ 新增持有</span>
+      <span class="yjb_bottom_assets" id="bottom_assets_mg">¥ --</span>
+      <span class="yjb_bottom_up" id="bottom_up_mg">↑ --</span>
+      <span class="yjb_bottom_down" id="bottom_down_mg">↓ --</span>
+      <span class="yjb_bottom_income" id="bottom_income_mg">今日收益: --</span>
+      <span class="yjb_bottom_toggle" id="bottom_expand_mg">▼</span>
+    </footer>
+
+    <!-- 收益详情展开面板（管理页） -->
+    <div class="yjb_detail_expand_wrapper" id="detail_expand_panel_mg"></div>
+
+  </div><!-- /管理页面 -->
+
+  <!-- ========== 添加基金页面 ========== -->
+  <div id="view_add" class="yjb_view">
+
+    <header class="yjb_header">
+      <div class="yjb_header_back" id="btn_back_from_add">←</div>
+      <h1 class="yjb_header_title">添加基金</h1>
+      <div class="yjb_header_placeholder"></div>
+    </header>
+
+    <!-- 添加方式标签 -->
+    <nav class="yjb_add_tabs">
+      <div class="yjb_add_tab yjb_add_tab_active" data-tab="manual">手动导入</div>
+      <div class="yjb_add_tab" data-tab="qrcode">扫码添加</div>
+    </nav>
+
+    <!-- 手动导入面板 -->
+    <div id="add_manual_panel" class="yjb_add_panel">
+      <div class="yjb_form_group">
+        <label>基金代码</label>
+        <input type="text" id="add_fund_code" placeholder="输入6位基金代码" maxlength="6" />
+      </div>
+      <div class="yjb_form_group">
+        <label>基金名称（选填）</label>
+        <input type="text" id="add_fund_name" placeholder="搜索或手动输入" id="add_fund_name_input" />
+      </div>
+      <div class="yjb_search_result" id="fund_search_result" style="display:none;">
+        <!-- 搜索结果下拉 -->
+      </div>
+      <button class="yjb_btn_primary" id="btn_add_fund_confirm">确认添加</button>
+    </div>
+
+    <!-- 扫码面板 -->
+    <div id="add_qrcode_panel" class="yjb_add_panel" style="display:none;">
+      <div class="yjb_qrcode_area" id="qr_login_area">
+        <p>使用养基宝 App 扫描二维码添加基金</p>
+        <div class="yjb_qr_img" id="qr_code_img">
+          <!-- QR 图片 -->
+        </div>
+        <p class="yjb_qr_status" id="qr_status_text">等待获取二维码...</p>
+      </div>
+    </div>
+
+  </div><!-- /添加页面 -->
+
+  <!-- ========== 配置面板（右侧滑入） ========== -->
+  <aside id="panel_config" class="yjb_side_panel">
+
+    <div class="yjb_panel_header">
+      <span>设置</span>
+      <div class="yjb_panel_close" id="btn_close_config">×</div>
+    </div>
+
+    <!-- 用户信息 -->
+    <div class="yjb_user_info" id="user_info_section">
+      <div class="yjb_avatar" id="user_avatar">👤</div>
+      <div class="yjb_user_detail">
+        <div class="yjb_user_name" id="user_name">未登录</div>
+        <div class="yjb_user_action" id="btn_login">点击登录</div>
+      </div>
+    </div>
+
+    <!-- Webhook 入口 -->
+    <div class="yjb_config_section">
+      <div class="yjb_config_label">企业微信推送</div>
+      <div class="yjb_config_entry" id="btn_open_webhook">
+        <span>配置推送机器人</span>
+        <span>›</span>
+      </div>
+    </div>
+
+    <!-- 主题样式 -->
+    <div class="yjb_config_section">
+      <div class="yjb_config_label">样式主题</div>
+      <div class="yjb_theme_grid" id="theme_grid">
+        <button class="yjb_theme_option" type="button" data-theme="classic">
+          <span class="yjb_theme_swatch yjb_theme_swatch_classic"></span>
+          <span>经典</span>
+        </button>
+        <button class="yjb_theme_option" type="button" data-theme="obsidian">
+          <span class="yjb_theme_swatch yjb_theme_swatch_obsidian"></span>
+          <span>曜石</span>
+        </button>
+        <button class="yjb_theme_option" type="button" data-theme="teal">
+          <span class="yjb_theme_swatch yjb_theme_swatch_teal"></span>
+          <span>松石</span>
+        </button>
+        <button class="yjb_theme_option" type="button" data-theme="crimson">
+          <span class="yjb_theme_swatch yjb_theme_swatch_crimson"></span>
+          <span>赤金</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 数据刷新 -->
+    <div class="yjb_config_section">
+      <div class="yjb_config_label">数据刷新</div>
+      <div class="yjb_setting_row">
+        <span class="yjb_setting_name">定时刷新</span>
+        <label class="yjb_switch">
+          <input type="checkbox" id="refresh_toggle" />
+          <span class="yjb_switch_track"></span>
+          <span class="yjb_switch_thumb"></span>
+        </label>
+      </div>
+      <div class="yjb_setting_row">
+        <span class="yjb_setting_name">刷新时间</span>
+        <select id="refresh_interval" class="yjb_refresh_select">
+          <option value="1">1 分钟</option>
+          <option value="3">3 分钟</option>
+          <option value="5">5 分钟</option>
+          <option value="10">10 分钟</option>
+          <option value="15">15 分钟</option>
+          <option value="30">30 分钟</option>
+          <option value="60">60 分钟</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 收益接口测试 -->
+    <div class="yjb_config_section">
+      <div class="yjb_config_label">收益接口测试</div>
+      <div class="yjb_probe_box">
+        <div class="yjb_probe_hint">点击后请求 /income_line_data，并在下方显示原始返回。</div>
+        <div class="yjb_probe_actions">
+          <button class="yjb_btn_text yjb_period_test_btn" type="button" data-date-type="day" data-label="测试 day">测试 day</button>
+          <button class="yjb_btn_text yjb_period_test_btn" type="button" data-date-type="week" data-label="测试 week">测试 week</button>
+          <button class="yjb_btn_text yjb_period_test_btn" type="button" data-date-type="month" data-label="测试 month">测试 month</button>
+        </div>
+        <textarea id="period_test_result" class="yjb_probe_result" readonly placeholder="测试结果会显示在这里"></textarea>
+        <button class="yjb_btn_text yjb_probe_copy_btn" id="period_test_copy_btn" type="button">复制结果</button>
+      </div>
+    </div>
+
+    <!-- 版本信息 -->
+    <div class="yjb_config_section">
+      <div class="yjb_version">版本 v<span id="version_num">1.2.1</span></div>
+    </div>
+
+  </aside><!-- /配置面板 -->
+
+  <!-- ========== Webhook 面板（右侧滑入） ========== -->
+  <aside id="panel_webhook" class="yjb_side_panel">
+
+    <div class="yjb_panel_header">
+      <span>企微机器人推送</span>
+      <div class="yjb_panel_close" id="btn_close_webhook">×</div>
+    </div>
+
+    <div class="yjb_webhook_body">
+      <div class="yjb_wh_row">
+        <span class="yjb_wh_label">开启推送</span>
+        <label class="yjb_switch">
+          <input type="checkbox" id="wh_toggle" />
+          <span class="yjb_switch_track"></span>
+          <span class="yjb_switch_thumb"></span>
+        </label>
+      </div>
+
+      <div id="wh_fields" class="yjb_wh_fields" style="display:none;">
+        <label class="yjb_wh_field">
+          <span class="yjb_wh_label">Webhook 地址</span>
+          <input type="text" id="wh_url" class="yjb_wh_input"
+            placeholder="输入企微机器人 Webhook 地址" />
+        </label>
+
+        <label class="yjb_wh_field yjb_wh_field_inline">
+          <span class="yjb_wh_label">推送间隔</span>
+          <select id="wh_interval" class="yjb_wh_select">
+            <option value="5">5 分钟</option>
+            <option value="10">10 分钟</option>
+            <option value="15">15 分钟</option>
+            <option value="30">30 分钟</option>
+            <option value="60">60 分钟</option>
+          </select>
+        </label>
+
+        <div class="yjb_wh_toggle_list">
+          <label class="yjb_wh_row yjb_wh_row_compact">
+            <span class="yjb_wh_label">定时推送</span>
+            <span class="yjb_switch">
+              <input type="checkbox" id="wh_timed_toggle" />
+              <span class="yjb_switch_track"></span>
+              <span class="yjb_switch_thumb"></span>
+            </span>
+          </label>
+          <label class="yjb_wh_row yjb_wh_row_compact">
+            <span class="yjb_wh_label">日报</span>
+            <span class="yjb_switch">
+              <input type="checkbox" id="wh_daily_toggle" />
+              <span class="yjb_switch_track"></span>
+              <span class="yjb_switch_thumb"></span>
+            </span>
+          </label>
+          <label class="yjb_wh_row yjb_wh_row_compact">
+            <span class="yjb_wh_label">周报</span>
+            <span class="yjb_switch">
+              <input type="checkbox" id="wh_weekly_toggle" />
+              <span class="yjb_switch_track"></span>
+              <span class="yjb_switch_thumb"></span>
+            </span>
+          </label>
+          <label class="yjb_wh_row yjb_wh_row_compact">
+            <span class="yjb_wh_label">月报</span>
+            <span class="yjb_switch">
+              <input type="checkbox" id="wh_monthly_toggle" />
+              <span class="yjb_switch_track"></span>
+              <span class="yjb_switch_thumb"></span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <p class="yjb_wh_desc">
+        定时推送为简洁版收益提醒，仅交易时间内发送。日报每天 22:00，周报每周最后一个工作日 22:00，月报每月最后一个工作日 22:00。
+      </p>
+
+      <div class="yjb_wh_actions">
+        <div class="yjb_wh_test_group">
+          <button class="yjb_btn_text yjb_wh_test_btn" id="wh_test_btn" type="button" data-kind="test" data-label="测试普通">测试普通</button>
+          <button class="yjb_btn_text yjb_wh_test_btn" id="wh_test_timer_btn" type="button" data-kind="timer" data-label="测试定时">测试定时</button>
+          <button class="yjb_btn_text yjb_wh_test_btn" id="wh_test_daily_btn" type="button" data-kind="daily" data-label="测试日报">测试日报</button>
+          <button class="yjb_btn_text yjb_wh_test_btn" id="wh_test_weekly_btn" type="button" data-kind="weekly" data-label="测试周报">测试周报</button>
+          <button class="yjb_btn_text yjb_wh_test_btn" id="wh_test_monthly_btn" type="button" data-kind="monthly" data-label="测试月报">测试月报</button>
+        </div>
+        <button class="yjb_btn_primary yjb_wh_save_btn" id="wh_save_btn" type="button">保存设置</button>
+      </div>
+    </div>
+
+  </aside><!-- /Webhook面板 -->
+
+  <!-- ========== 登录弹窗（模态框） ========== -->
+  <div id="dialog_login" class="yjb_dialog_overlay" style="display:none;">
+    <div class="yjb_dialog yjb_dialog_login">
+      <div class="yjb_dialog_close" id="btn_close_login">×</div>
+      <h3 class="yjb_dialog_title">微信扫码登录</h3>
+      <div class="yjb_qr_container" id="login_qr_img">
+        <!-- 登录二维码 -->
+      </div>
+      <p class="yjb_qr_hint" id="login_qr_hint">请使用微信扫一扫登录</p>
+      <div class="yjb_dialog_footer">
+        <button class="yjb_btn_text" id="btn_refresh_qr">刷新二维码</button>
+      </div>
+    </div>
+  </div><!-- /登录弹窗 -->
+
+  <!-- ========== 版本更新弹窗 ========== -->
+  <div id="dialog_version" class="yjb_dialog_overlay" style="display:none;">
+    <div class="yjb_dialog yjb_dialog_version">
+      <h3 class="yjb_dialog_title">发现新版本</h3>
+      <div class="yjb_version_content" id="version_content">
+        <p>当前版本：<span id="current_ver">1.2.1</span></p>
+        <p>最新版本：<span id="latest_ver">--</span></p>
+      </div>
+      <div class="yjb_dialog_bottom">
+        <button class="yjb_btn_text" id="btn_skip_version">跳过此版本</button>
+        <button class="yjb_btn_primary" id="btn_go_update">去更新</button>
+      </div>
+    </div>
+  </div><!-- /版本更新弹窗 -->
+
+  <!-- ========== 确认对话框（通用） ========== -->
+  <div id="dialog_confirm" class="yjb_dialog_overlay" style="display:none;">
+    <div class="yjb_dialog yjb_dialog_confirm">
+      <div class="yjb_confirm_content" id="confirm_msg">确认操作？</div>
+      <div class="yjb_dialog_bottom">
+        <button class="yjb_btn_text" id="confirm_cancel">取消</button>
+        <button class="yjb_btn_primary" id="confirm_ok">确定</button>
+      </div>
+    </div>
+  </div><!-- /确认对话框 -->
+
+  <!-- ========== 加载状态 ========== -->
+  <div id="loading_mask" class="yjb_loading" style="display:none;">
+    <div class="yjb_spinner"></div>
+    <p>加载中...</p>
+  </div>
+
+</div><!-- /#app -->
+
+<!-- 脚本加载：MD5库 → QR码库 → API层 → 主逻辑 -->
+<script src="js/md5.min.js"></script>
+<script src="js/qrcode.js"></script>
+<script src="js/api.js"></script>
+<script src="js/popup.js"></script>
+</body>
+</html>
