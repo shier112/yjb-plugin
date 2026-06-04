@@ -701,6 +701,11 @@ function pushWebhookModel(url, callback, model) {
 function buildWebhookMarkdown(model) {
   var md = '## ' + getReportTitle(model.kind) + '\n\n';
   md += '> ' + trendIcon(model.income) + ' 今日收益：**' + formatSigned(model.income, 2) + ' 元**（' + formatSigned(model.rate, 2) + '%）\n';
+
+  if (model.concise) {
+    return md;
+  }
+
   md += '> 总资产：**' + formatMoney(model.assets) + ' 元**\n';
 
   if (model.accountSummary.up || model.accountSummary.down) {
@@ -709,10 +714,6 @@ function buildWebhookMarkdown(model) {
   md += '> 更新时间：' + model.updatedAt + '\n';
 
   md = appendPeriodMarkdown(md, model);
-
-  if (model.concise) {
-    return md;
-  }
 
   if (model.accountSummary.accounts && model.accountSummary.accounts.length) {
     md += '\n### 账户表现\n';
@@ -826,6 +827,16 @@ function truncateText(ctx, text, maxWidth) {
   return text + ellipsis;
 }
 
+function fitCanvasFontSize(ctx, text, maxWidth, maxSize, minSize, weight, family) {
+  var size = maxSize;
+  while (size > minSize) {
+    ctx.font = weight + ' ' + size + 'px ' + family;
+    if (ctx.measureText(text).width <= maxWidth) return size;
+    size -= 2;
+  }
+  return minSize;
+}
+
 function drawTrendDot(ctx, x, y, value) {
   ctx.beginPath();
   ctx.arc(x, y, 6, 0, Math.PI * 2);
@@ -881,7 +892,7 @@ function renderTimerWebhookImage(model) {
   }
 
   var width = 900;
-  var height = 520;
+  var height = 430;
   var canvas = new OffscreenCanvas(width, height);
   var ctx = canvas.getContext('2d');
   if (!ctx) return Promise.reject(new Error('Canvas 2D context 不可用'));
@@ -889,46 +900,40 @@ function renderTimerWebhookImage(model) {
   ctx.fillStyle = '#f3f5f9';
   ctx.fillRect(0, 0, width, height);
 
+  var rising = toNumber(model.income, 0) >= 0;
   var gradient = ctx.createLinearGradient(30, 28, width - 30, height - 28);
-  gradient.addColorStop(0, '#121936');
-  gradient.addColorStop(0.56, '#2857bf');
-  gradient.addColorStop(1, '#1b8a68');
+  if (rising) {
+    gradient.addColorStop(0, '#8b1d1d');
+    gradient.addColorStop(0.56, '#dc2626');
+    gradient.addColorStop(1, '#f97373');
+  } else {
+    gradient.addColorStop(0, '#064e3b');
+    gradient.addColorStop(0.56, '#059669');
+    gradient.addColorStop(1, '#34d399');
+  }
   drawRoundRect(ctx, 28, 28, width - 56, height - 56, 28, gradient);
 
   ctx.font = '700 32px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
   ctx.fillStyle = '#ffffff';
-  ctx.fillText('养基宝定时提醒', 62, 84);
+  ctx.fillText('养基宝定时提醒', 64, 88);
   ctx.font = '400 17px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.72)';
-  ctx.fillText(model.updatedAt, 62, 116);
+  ctx.fillText(model.updatedAt, 64, 122);
 
-  ctx.font = '700 82px "DIN Alternate", "Microsoft YaHei", Arial, sans-serif';
-  ctx.fillStyle = model.income >= 0 ? '#ffeded' : '#dff8ed';
-  ctx.fillText(formatSigned(model.income, 2), 62, 226);
-  ctx.font = '500 28px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.82)';
-  ctx.fillText('今日收益 元', 64, 268);
-
-  var cardY = 318;
-  drawRoundRect(ctx, 62, cardY, 236, 86, 18, 'rgba(255,255,255,0.16)');
-  drawRoundRect(ctx, 332, cardY, 236, 86, 18, 'rgba(255,255,255,0.16)');
-  drawRoundRect(ctx, 602, cardY, 236, 86, 18, 'rgba(255,255,255,0.16)');
+  drawRoundRect(ctx, 64, 166, width - 128, 178, 24, 'rgba(255,255,255,0.16)', 'rgba(255,255,255,0.24)');
 
   ctx.font = '400 16px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
   ctx.fillStyle = 'rgba(255,255,255,0.70)';
-  ctx.fillText('今日收益率', 86, cardY + 30);
-  ctx.fillText('总资产', 356, cardY + 30);
-  ctx.fillText('涨跌分布', 626, cardY + 30);
-
-  ctx.font = '700 28px "DIN Alternate", "Microsoft YaHei", Arial, sans-serif';
+  ctx.fillText('今日收益', 96, 210);
+  var incomeText = formatSigned(model.income, 2);
+  var incomeFamily = '"DIN Alternate", "Microsoft YaHei", Arial, sans-serif';
+  var incomeFontSize = fitCanvasFontSize(ctx, incomeText, width - 210, 88, 52, '700', incomeFamily);
+  ctx.font = '700 ' + incomeFontSize + 'px ' + incomeFamily;
   ctx.fillStyle = '#ffffff';
-  ctx.fillText(formatSigned(model.rate, 2) + '%', 86, cardY + 64);
-  ctx.fillText(formatMoney(model.assets) + ' 元', 356, cardY + 64);
-  ctx.fillText('涨 ' + model.accountSummary.up + ' / 跌 ' + model.accountSummary.down, 626, cardY + 64);
-
-  ctx.font = '400 13px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.60)';
-  ctx.fillText('仅展示核心行情数据', 62, height - 66);
+  ctx.fillText(incomeText, 94, 292);
+  ctx.font = '500 24px "Microsoft YaHei", "PingFang SC", Arial, sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.82)';
+  ctx.fillText('元', 98, 324);
 
   if (!canvas.convertToBlob) {
     return Promise.reject(new Error('convertToBlob 不可用'));
